@@ -12,16 +12,20 @@ public class SistemaAcademico {
     public void processarArquivo(String nomeArq) throws IOException{
         BufferedReader br = new BufferedReader(new FileReader(nomeArq));
         String linha;
+        boolean primeiraLinha = true;
         while((linha = br.readLine()) != null ){
+            if (primeiraLinha) {
+                primeiraLinha = false;
+                continue;
+            }
             processarLinha(linha);
         }
         br.close();
         calcularTodosCR();
         calcularCRMedioDisciplina();
     }
-
     private void processarLinha(String linha) {
-        String[] dados = linha.split(" ");
+        String[] dados = linha.split("[,; ]");
          
         if(dados.length < 6){
             System.out.println("Linha inválida");
@@ -65,17 +69,18 @@ public class SistemaAcademico {
     public void imprimirRelatorioFinal(){
         List<Aluno> listaAlunos = new ArrayList<>(alunos.values());
         listaAlunos.sort(Comparator.comparing(Aluno::getMat));
-        System.out.println("------- O CR dos alunos é: --------");
+        System.out.println("\n------- O CR dos alunos é: --------\n");
 
         for(Aluno aluno : alunos.values()){
-             System.out.printf("Matrícula: %s | CR: %.2f%n",
-                aluno.getMat(), aluno.getCR());
+             System.out.printf("Matrícula: %s | CR: %.2f%n", aluno.getMat(), aluno.getCR());
         }
         System.out.println("-----------------------------------");
-        }
 
-        List<Disciplina> listaDisciplinas = new ArrayList<>(disciplinas.values());
-        listaDisciplinas.sort(Comparator.comparing(Disciplina::getCod));
+        System.out.println("\n----- Média de CR dos cursos -----\n");
+        for(Disciplina disciplina : disciplinas.values()){
+            double crMedio = disciplina.getMediaCR();
+            System.out.printf("Disciplina: %s | CR Médio: %.2f%n", disciplina.getCodDisciplina(), crMedio);
+        }
 
     }
 }
