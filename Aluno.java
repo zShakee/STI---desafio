@@ -2,15 +2,16 @@ import java.util.*;
 
 public class Aluno {
     private String mat;
-    private int cod_curso;
-    private ArrayList<Disciplina> disciplinas;
+    private Curso curso;
+    private ArrayList<RegistroNotas> historico;
     private double cr;
 
-    public Aluno(String mat, int cod_curso){
+    public Aluno(String mat, Curso curso){
         this.mat = mat;
-        this.cod_curso = cod_curso;
+        this.curso = curso;
         this.cr = 0.0;
-        this.disciplinas = new ArrayList<>();
+        this.historico = new ArrayList<>();
+        //this.disciplinas = new ArrayList<>();
     }
 
     public String getMat(){
@@ -20,39 +21,29 @@ public class Aluno {
     public Double getCR(){
         return cr;
     }
-    
-    public void adicionarDisciplina(Disciplina disciplina){
-        if(!disciplinas.contains(disciplina))
-            disciplinas.add(disciplina);
-    }
 
-    public void exibeDisciplinas(){
-        for(Disciplina disciplina : disciplinas){
-            System.out.printf("%s\n", disciplina.getCodDisciplina());
-        }
+    public Curso getCurso(){
+        return curso;
+    }
+    
+    public void adicionaHistorico(RegistroNotas registro){
+        this.historico.add(registro);
     }
     
     public void calculaCR(){
-        if(disciplinas.isEmpty()){
+        if(historico.isEmpty()){
             this.cr = 0.0;
             return;
         }
-
-
         int totalCargaHoraria = 0;
         double nota_ponderada = 0.0;
-
-
-        for(Disciplina disciplina : disciplinas){
-            Collection<Double> notas = disciplina.getNota(mat);
-            if(notas != null){ 
-                for(Double nota : notas){
-                    if(nota == null) continue;
-                    nota_ponderada += nota*disciplina.getCargaHoraria();
-                    totalCargaHoraria += disciplina.getCargaHoraria();
-                }
-            }
+        for(RegistroNotas registro : historico){
+            Double nota = registro.getNota();
+            Disciplina disciplina = registro.getDisciplina();
+            nota_ponderada += nota * disciplina.getCargaHoraria();
+            totalCargaHoraria += disciplina.getCargaHoraria();
         }
+        
         if(totalCargaHoraria > 0){
             this.cr = nota_ponderada / totalCargaHoraria;
         }else{

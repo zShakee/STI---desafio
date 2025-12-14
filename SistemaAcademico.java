@@ -41,17 +41,19 @@ public class SistemaAcademico {
         int cargaHoraria = Integer.parseInt(dados[4].trim());
         String semestre = dados[5].trim();
 
-        Aluno aluno = alunos.get(mat);
-        if(aluno == null ){
-            aluno = new Aluno(mat, codCurso);
-            alunos.put(mat,aluno);
-        }
-
+        
         Curso curso = cursos.get(codCurso);
         if(curso == null){
             curso = new Curso(codCurso);
             cursos.put(codCurso, curso);
         }
+        
+        Aluno aluno = alunos.get(mat);
+        if(aluno == null ){
+            aluno = new Aluno(mat, curso);
+            alunos.put(mat,aluno);
+        }
+
         curso.adicionarAluno(aluno);
 
         Disciplina disciplina = disciplinas.get(codDisciplina);
@@ -60,9 +62,8 @@ public class SistemaAcademico {
             disciplinas.put(codDisciplina,disciplina);
         }
 
-        disciplina.adicionarNota(mat,semestre,nota);
-        aluno.adicionarDisciplina(disciplina);
-
+        RegistroNotas historico = new RegistroNotas(disciplina, aluno, semestre,nota);
+        aluno.adicionaHistorico(historico);
     }
 
     private void calcularTodosCR(){
@@ -93,11 +94,5 @@ public class SistemaAcademico {
             System.out.printf("Cod: %d - %.2f\n",curso.getCodCurso(), curso.getCRMedio());
         }
 
-    }
-    public void imprimeAlunos(){
-        for(Aluno aluno : alunos.values()){
-            System.out.printf("Mat: %s\n",aluno.getMat());
-            aluno.exibeDisciplinas();
-        }
     }
 }

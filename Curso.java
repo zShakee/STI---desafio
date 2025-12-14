@@ -1,11 +1,19 @@
 import java.util.*;
 public class Curso {
+    private String nomeCurso;
     private ArrayList<Aluno> alunos;
     private int codCurso;
     private double crMedio;
 
     public Curso(int codCurso){
         this.codCurso = codCurso;
+        alunos = new ArrayList<>();
+        crMedio = 0.0;
+    }
+
+    public Curso(int codCurso,String nome){
+        this.codCurso = codCurso;
+        this.nomeCurso = nome;
         alunos = new ArrayList<>();
         crMedio = 0.0;
     }
