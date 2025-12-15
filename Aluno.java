@@ -26,10 +26,13 @@ public class Aluno {
         return curso;
     }
     
+
+     //observação importante para mat 102 e 115, alunos cursando a mesma disciplina duas vezes no mesmo semestre
+
     public void adicionaHistorico(RegistroNotas registro){
-        this.historico.add(registro);
+         this.historico.add(registro);
     }
-    
+
     public void calculaCR(){
         if(historico.isEmpty()){
             this.cr = 0.0;
