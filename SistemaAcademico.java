@@ -11,21 +11,19 @@ public class SistemaAcademico {
         cursos = new HashMap<>();
     }
 
+
     public void processarArquivo(String nomeArq) throws IOException{
-        BufferedReader br = new BufferedReader(new FileReader(nomeArq));
-        String linha;
-        boolean primeiraLinha = true;
-        while((linha = br.readLine()) != null ){
-            if (primeiraLinha) {
-                primeiraLinha = false;
-                continue;
+        try(BufferedReader br = new BufferedReader(new FileReader(nomeArq))){
+            String linha = br.readLine(); //descarta cabeçalho
+            while((linha = br.readLine()) != null ){
+                processarLinha(linha);
             }
-            processarLinha(linha);
+            br.close();
         }
-        br.close();
         calcularTodosCR();
         calcularCRMedioCursos();
     }
+
     private void processarLinha(String linha) {
         String[] dados = linha.split(",");
          
