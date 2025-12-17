@@ -1,7 +1,7 @@
 import java.util.*;
 public class Curso {
     private String nomeCurso;
-    private ArrayList<Aluno> alunos;
+    private List<Aluno> alunos; //usar interface
     private int codCurso;
     private double crMedio;
 
@@ -42,5 +42,15 @@ public class Curso {
         }
         this.crMedio = soma/alunos.size();
     }
-
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+        if(obj == null || getClass() != obj.getClass()) return false;
+        Curso that = (Curso) obj;
+        return codCurso == that.codCurso;
+    }
+    @Override
+    public int hashCode(){
+        return Integer.hashCode(codCurso);
+    }
 }

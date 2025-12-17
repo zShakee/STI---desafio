@@ -3,7 +3,7 @@ import java.util.*;
 public class Aluno {
     private String mat;
     private Curso curso;
-    private ArrayList<RegistroNotas> historico;
+    private List<RegistroNotas> historico;
     private double cr;
 
     public Aluno(String mat, Curso curso){
@@ -29,8 +29,13 @@ public class Aluno {
 
      //observação importante para mat 102 e 115, alunos cursando a mesma disciplina duas vezes no mesmo semestre
 
-    public void adicionaHistorico(RegistroNotas registro){
-         this.historico.add(registro);
+    public void adicionaHistorico(RegistroNotas novoRegistro){
+        for(RegistroNotas registroExistente : historico){
+            if(registroExistente.getDisciplina().getCodDisciplina().equals(novoRegistro.getDisciplina().getCodDisciplina())
+               && (registroExistente.getSemestre().equals(novoRegistro.getSemestre()))) 
+            return;
+        }
+        this.historico.add(novoRegistro);
     }
 
     public void calculaCR(){
@@ -53,4 +58,17 @@ public class Aluno {
             this.cr = 0.0;
         }
     }
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+        if(obj == null || getClass() != obj.getClass()) return false;
+        Aluno aluno = (Aluno) obj;
+        return mat.equals(aluno.mat);  // Compara pela matrícula
+    }
+
+    @Override
+    public int hashCode(){
+        return mat.hashCode();  // IMPORTANTE: sempre override hashCode junto com equals
+    }
 }
+
